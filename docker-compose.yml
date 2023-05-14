@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  restapi:
+    build: Backend/.
+    restart: always
+    ports:
+      - "8000:8000"
+    networks:
+      - api-network
+  front:
+    build: Frontend/.
+    restart: always
+    depends_on:
+      - restapi
+    ports:
+      - "9000:9000"
+    networks:
+      - api-network
+networks:
+  api-network:
+    driver: bridge

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Persons</title>
+  </head>
+  <body>
+    <h1>Person Data</h1>
+    <button id="getall" style="width: 150px; height: 30px">GET ALL</button>
+    <button id="getid" style="width: 150px; height: 30px">GET BY ID</button>
+    <button id="post" style="width: 150px; height: 30px">CREATE</button>
+    <button id="put" style="width: 150px; height: 30px">UPDATE</button>
+    <button id="delete" style="width: 150px; height: 30px">DELETE</button>
+    <script>
+      const getall = document.getElementById("getall");
+      const getbyid = document.getElementById("getid");
+      const post = document.getElementById("post");
+      const put = document.getElementById("put");
+      const deletee = document.getElementById("delete");
+      getall.addEventListener("click", () => {
+        fetch(`http://127.0.0.1:8000/persons`, {
+          method: "GET",
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (myJson) {
+            alert(JSON.stringify(myJson));
+          });
+      });
+      getbyid.addEventListener("click", () => {
+        let id = prompt("Enter Person ID:");
+        fetch(`http://127.0.0.1:8000/persons/${id}`, {
+          method: "GET",
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (myJson) {
+            alert(JSON.stringify(myJson));
+          });
+      });
+      post.addEventListener("click", () => {
+        let name = prompt("Enter Name:");
+        let age = prompt("Enter Age:");
+        let gender = prompt("Enter Gender:");
+        let email = prompt("Enter Email:");
+        let postperson = {
+          name: name,
+          age: age,
+          gender: gender,
+          email: email,
+        };
+        fetch("http://127.0.0.1:8000/persons", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postperson),
+        })
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            alert("Person created successfully");
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      });
+      put.addEventListener("click", () => {
+        let id = prompt("Enter Person ID:");
+        let name = prompt("Enter Name:");
+        let age = prompt("Enter Age:");
+        let gender = prompt("Enter Gender:");
+        let email = prompt("Enter Email:");
+        let putperson = {
+          name: name,
+          age: age,
+          gender: gender,
+          email: email,
+        };
+        fetch(`http://127.0.0.1:8000/persons/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(putperson),
+        })
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            alert("Person updated successfully");
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      });
+      deletee.addEventListener("click", () => {
+        let id = prompt("Enter Person ID:");
+        fetch(`http://127.0.0.1:8000/persons/${id}`, {
+          method: "DELETE",
+        })
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            alert("Person deleted successfully");
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      });
+    </script>
+  </body>
+</html>
